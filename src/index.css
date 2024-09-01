@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hero-img {
+  animation: fadeIn 1s 1;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateX(100vw);
+  }
+
+  100% {
+    transform: translateX(0vw);
+  }
+}
+
+h6 {
+  color: #fde4e4;
+}
