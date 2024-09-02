@@ -13,14 +13,9 @@ import {
 } from "react-icons/fa";
 import useScrollToTop from "../../../components/useScrollToTop";
 import { Link } from "react-router-dom";
-
-// Define the types for the properties and form data
-interface Property {
-  id: number;
-  title: string;
-  image: string;
-  price: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/Store";
+import { removeFood } from "../../../redux/slices/FavouriteFoodSlice";
 
 interface FormData {
   firstName: string;
@@ -29,24 +24,13 @@ interface FormData {
   profilePicture: string;
 }
 
-const properties: Property[] = [
-  {
-    id: 1,
-    title: "Jollof Rice and Chicken",
-    image: "https://via.placeholder.com/300",
-    price: "₦4,500",
-  },
-  {
-    id: 2,
-    title: "White rice and stew",
-    image: "https://via.placeholder.com/300",
-    price: "₦2,300",
-  },
-  // Add more properties here
-];
-
 const UserDashboard: React.FC = () => {
   useScrollToTop();
+  const dispatch = useDispatch();
+
+  const State = useSelector((state: RootState) => state);
+  const { favouriteFood: foodItems } = State.FavouriteFood;
+
   const [showProfile, setShowProfile] = useState<boolean>(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] =
     useState<boolean>(false);
@@ -110,9 +94,9 @@ const UserDashboard: React.FC = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleDeleteProperty = (propertyId: number) => {
+  const handleDeleteProperty = (propertyId: string) => {
     // Handle property deletion logic here
-    alert(`Property with ID ${propertyId} deleted!`);
+    dispatch(removeFood(propertyId));
   };
 
   return (
@@ -199,30 +183,34 @@ const UserDashboard: React.FC = () => {
             Your Favorite Foods
           </h1>
           <div className="block md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {properties.map((property) => (
-              <motion.div
-                key={property.id}
-                className="bg-white rounded-lg max-[450px]:mb-6 shadow-lg overflow-hidden transform transition duration-500 hover:scale-105"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <img
-                  src={property.image}
-                  alt={property.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold">{property.title}</h2>
-                  <p className="text-lg font-bold">{property.price}</p>
-                  <button
-                    onClick={() => handleDeleteProperty(property.id)}
-                    className="mt-4 bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+            {foodItems.length < 1 ? (
+              <h1>Please add favourite foods to cart</h1>
+            ) : (
+              foodItems.map((item) => (
+                <motion.div
+                  key={item._id}
+                  className="bg-white rounded-lg max-[450px]:mb-6 shadow-lg overflow-hidden transform transition duration-500 hover:scale-105"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <img
+                    src={item.images[0]}
+                    alt={item.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h2 className="text-xl font-semibold">{item.title}</h2>
+                    <p className="text-lg font-bold">{item.price}</p>
+                    <button
+                      onClick={() => handleDeleteProperty(item._id)}
+                      className="mt-4 bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </motion.div>
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -3,11 +3,13 @@ import Navbar from "../components/Navbar";
 import bgImg from "../assets/img/pexels-robinstickel-70497.jpg";
 import { FaTrashAlt } from "react-icons/fa";
 import Footer from "../components/Footer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/Store";
 import { Link } from "react-router-dom";
+import { removeFood } from "../redux/slices/FavouriteFoodSlice";
 
 function Cart() {
+  const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state);
   const favouriteFoods = state.FavouriteFood.favouriteFood;
 
@@ -21,6 +23,10 @@ function Cart() {
       return acc;
     }, 0);
   }, [favouriteFoods]);
+
+  const handleFoodRemove = (foodId: string) => {
+    dispatch(removeFood(foodId));
+  };
 
   return (
     <>
@@ -44,22 +50,29 @@ function Cart() {
             </tr>
           </thead>
           <tbody>
-            {favouriteFoods.map((food, index) => (
-              <tr key={index}>
-                <td className="p-4">
-                  <img
-                    src={food.images[0]}
-                    alt={food.title}
-                    className="w-20 h-20 object-cover"
-                  />
-                </td>
-                <td className="p-4">{food.title}</td>
-                <td className="p-4">₦{food.price}</td>
-                <td className="p-4">
-                  <FaTrashAlt className="text-gray-500 cursor-pointer hover:text-red-600" />
-                </td>
-              </tr>
-            ))}
+            {favouriteFoods.length < 1 ? (
+              <h1 className="text-lg font-bold mt-6">Your cart is empty</h1>
+            ) : (
+              favouriteFoods.map((food, index) => (
+                <tr key={index}>
+                  <td className="p-4">
+                    <img
+                      src={food.images[0]}
+                      alt={food.title}
+                      className="w-20 h-20 object-cover"
+                    />
+                  </td>
+                  <td className="p-4">{food.title}</td>
+                  <td className="p-4">₦{food.price}</td>
+                  <td className="p-4">
+                    <FaTrashAlt
+                      onClick={() => handleFoodRemove(food._id)}
+                      className="text-gray-500 cursor-pointer hover:text-red-600"
+                    />
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
 

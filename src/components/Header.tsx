@@ -24,9 +24,11 @@ function Header() {
                 Order Now <MdArrowForwardIos className="ml-1" />
               </button>
             </Link>
-            <button className="text-[#df2020] rounded-md font-semibold py-[0.5rem] md:px-[1.1rem] px-[0.8rem] items-center border-[#df2020] border">
-              See all foods
-            </button>
+            <Link to={"/foods"}>
+              <button className="text-[#df2020] rounded-md font-semibold py-[0.5rem] md:px-[1.1rem] px-[0.8rem] items-center border-[#df2020] border">
+                See all foods
+              </button>
+            </Link>
           </div>
           <div className="flex gap-5 md:mt-9 mt-4">
             <h3 className="flex gap-3 items-center font-semibold max-[450px]:text-sm">

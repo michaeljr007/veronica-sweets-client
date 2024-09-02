@@ -3,12 +3,14 @@ import logo from "../assets/img/tribebyveronicaLogo.png";
 import { RiShoppingBasketLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/Store"; // Adjust the import path to where RootState is defined
 import useScrollToTop from "./useScrollToTop";
+import { removeFood } from "../redux/slices/FavouriteFoodSlice";
 
 const Navbar = ({ current }: { current: string }) => {
   useScrollToTop();
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const State = useSelector((state: RootState) => state);
@@ -24,6 +26,10 @@ const Navbar = ({ current }: { current: string }) => {
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
+  };
+
+  const handleRemoveFood = (itemId: string): void => {
+    dispatch(removeFood(itemId));
   };
 
   return (
@@ -107,9 +113,11 @@ const Navbar = ({ current }: { current: string }) => {
 
                     <RiShoppingBasketLine className="text-[1.5rem] hover:text-[#df2020]" />
                   </button>
-                  <button>
-                    <FaRegUser className="hover:text-[#df2020] text-[1.1rem]" />
-                  </button>
+                  <Link to={"/dashboard"}>
+                    <button>
+                      <FaRegUser className="hover:text-[#df2020] text-[1.1rem]" />
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -229,7 +237,10 @@ const Navbar = ({ current }: { current: string }) => {
                       <p className="text-gray-600">{food.price}</p>
                     </div>
                   </div>
-                  <button className="text-red-600 hover:text-red-800">
+                  <button
+                    onClick={() => handleRemoveFood(food._id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
                     Remove
                   </button>
                 </li>
