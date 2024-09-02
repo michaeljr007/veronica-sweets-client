@@ -44,7 +44,7 @@ const Navbar = ({ current }: { current: string }) => {
                 </Link>
               </div>
               <div className="hidden lg:block">
-                <ul className="ml-5 flex items-center space-x-4">
+                <ul className="ml-0 lg:mr-10 flex items-center space-x-4">
                   <Link to={"/"}>
                     <li
                       className={`${
@@ -85,9 +85,9 @@ const Navbar = ({ current }: { current: string }) => {
                   </Link>
                 </ul>
               </div>
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-1 lg:ml-4 items-center">
                 {!userProfile ? (
-                  <div className="flex gap-5 max-[900px]:hidden">
+                  <div className="flex gap-4 max-[900px]:hidden">
                     <Link to={"/login"}>
                       <button>Log in</button>
                     </Link>
@@ -115,7 +115,13 @@ const Navbar = ({ current }: { current: string }) => {
                   </button>
                   <Link to={"/dashboard"}>
                     <button>
-                      <FaRegUser className="hover:text-[#df2020] text-[1.1rem]" />
+                      <FaRegUser className="hover:text-[#df2020] text-[1.1rem] mt-1" />
+                    </button>
+                  </Link>
+
+                  <Link to={"/admin-login"}>
+                    <button className="mt-[0.15rem] max-[900px]:hidden">
+                      Admin
                     </button>
                   </Link>
                 </div>
@@ -192,13 +198,25 @@ const Navbar = ({ current }: { current: string }) => {
                     Sign up
                   </li>
                 </Link>
+                <Link to={"/admin-login"}>
+                  <li className="text-[#df2020] hover:bg-red-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                    Admin
+                  </li>
+                </Link>
               </>
             ) : (
-              <Link to={"/dashboard"}>
-                <li className="text-[#df2020] hover:bg-red-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                  Dashboard
-                </li>
-              </Link>
+              <div>
+                <Link to={"/dashboard"}>
+                  <li className="text-[#df2020] hover:bg-red-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                    Dashboard
+                  </li>
+                </Link>
+                <Link to={"/admin-login"}>
+                  <li className="text-[#df2020] hover:bg-red-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                    Admin
+                  </li>
+                </Link>
+              </div>
             )}
           </ul>
         </div>

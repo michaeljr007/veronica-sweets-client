@@ -7,20 +7,23 @@ import logo1 from "../assets/img/res-logo.2f9021c4.png";
 import { FaLocationDot } from "react-icons/fa6";
 import useScrollToTop from "../components/useScrollToTop";
 import axios from "axios";
+import { addProfile } from "../redux/slices/ProfileSlice";
+import { useDispatch } from "react-redux";
 
 // Define the shape of the form data
 interface FormData {
-  email: string;
-  password: string;
+  userEmail: string;
+  userPassword: string;
 }
 
 const AdminLogin: React.FC = () => {
   useScrollToTop();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
+    userEmail: "",
+    userPassword: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,22 +39,22 @@ const AdminLogin: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "https://veronica-sweets-server.onrender.com/api/v1/users/login",
+        `${process.env.REACT_APP_LOGIN}`,
         formData
       );
       const { data } = response;
 
       if (data.user) {
-        // dispatch(
-        //     addProfile({
-        //       id: data.user.id,
-        //       name: data.user.name,
-        //       image: data.user.image,
-        //       token: data.user.token,
-        //       role: data.user.role,
-        //     })
-        //   );
-        navigate("/");
+        dispatch(
+          addProfile({
+            id: data.user.id,
+            name: data.user.name,
+            image: data.user.image,
+            token: data.user.token,
+            email: data.user.email,
+          })
+        );
+        navigate("/admin-dashboard");
       } else {
         alert("No user found");
       }
@@ -108,21 +111,21 @@ const AdminLogin: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <input
               type="email"
-              name="email"
-              id="email"
+              name="userEmail"
+              id="userEmail"
               placeholder="Email address"
               required
-              value={formData.email}
+              value={formData.userEmail}
               onChange={handleChange}
               className="border border-gray-400 py-2 px-4 w-full rounded mb-3"
             />
             <input
               type="password"
-              name="password"
-              id="password"
+              name="userPassword"
+              id="userPassword"
               placeholder="Password"
               required
-              value={formData.password}
+              value={formData.userPassword}
               onChange={handleChange}
               className="border border-gray-400 py-2 px-4 w-full rounded mb-3"
             />
